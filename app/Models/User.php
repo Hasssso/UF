@@ -42,4 +42,27 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+    public function totalIncome()
+{
+    return $this->transactions()
+        ->where('type', 'income')
+        ->where('status', 'completed')
+        ->sum('value');
+}
+public function transactions()
+{
+    return $this->hasMany(Transactions::class);
+}
+public function totalExpense()
+{
+    return $this->transactions()
+        ->where('type', 'expense')
+        ->where('status', 'completed')
+        ->sum('value');
+}
+
+public function balance()
+{
+    return $this->totalIncome() - $this->totalExpense();
+}
 }

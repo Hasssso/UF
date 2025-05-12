@@ -107,4 +107,15 @@ class BlogController extends Controller
         $blog->delete();
         return redirect()->route('blogs.index')->with('message', 'Blog Post Deleted Successfully');
     }
+    public function restore($id)
+{
+    Blog::withTrashed()->findOrFail($id)->restore();
+    return redirect()->back()->with('message', 'Blog restored successfully');
+}
+
+public function forceDelete($id)
+{
+    Blog::withTrashed()->findOrFail($id)->forceDelete();
+    return redirect()->back()->with('message', 'Blog permanently deleted');
+}
 }
